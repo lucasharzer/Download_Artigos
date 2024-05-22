@@ -7,7 +7,7 @@ import os
 class Navigation:
     def __init__(self):
         # Main variables
-        self.link = "https://journal.seriousgamessociety.org/index.php/IJSG/issue/archive/3"
+        self.link = "https://journal.seriousgamessociety.org/index.php/IJSG/issue/archive"
         self.folder = os.path.join(os.getcwd(), "files")
         self.titles_file = "titles.txt"
 
