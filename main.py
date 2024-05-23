@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import platform
 import aiohttp
 import asyncio
 import re
@@ -130,7 +131,8 @@ if __name__ == "__main__":
     site.create_folder()
 
     try:
-        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+        if platform.system().lower() == "windows":
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         asyncio.run(site.main(pos))
     except KeyboardInterrupt:
         pass
