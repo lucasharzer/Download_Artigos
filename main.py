@@ -70,7 +70,7 @@ class Navigation:
         with open(self.titles_file, "a", encoding="utf-8") as txt_file:
             contents = soup.find_all(self.div_tag, class_=self.contents_class)
             total_items = len(contents)
-            tasks = []
+            tasks = list()
             for content in contents:
                 title = content.find(self.h2_tag).get_text().split("\n")[0]
                 # PDF link
