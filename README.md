@@ -26,7 +26,8 @@ python main.py
 ```
 
 # Resultados
-Demonstração da execução do programa no terminal, pasta de downloads e arquivo de títulos
+Demonstração da execução do programa no terminal, pasta de downloads e arquivo de títulos: 
+
 <span>
     <img src="https://github.com/lucasharzer/Download_Artigos/assets/85804895/1ae439cb-aa62-48bd-b725-25e25145a004">
 </span>
