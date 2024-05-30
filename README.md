@@ -6,9 +6,16 @@ Obs: O programa funciona de forma assíncrona para acelerar e agilizar o process
 # Módulos
 - aiohttp: Biblioteca do python para fazer requisições HTTP cliente/servidor de forma assíncrona;
 - asyncio: Biblioteca do python para escrever código assíncrono e concorrente usando "async" e "await";
-- beautifulsoup4: Biblioteca leve do python para automação de informações web com parseador HTML.
+- beautifulsoup4: Biblioteca leve do python para automação de informações web com parseador HTML;
+- python-dotenv: Bilioteca do python ler variáveis de ambiente no arquivo .env
 
 # Comandos
+Obs: Execute esses comandos na raiz do projeto.
+
+- Renomear o arquivo .env.example para .env (manualmente ou com o comando)
+```bash
+ren .env.example .env
+```
 - Instalação de dependências
 ```bash
 pip install -r requirements.txt
