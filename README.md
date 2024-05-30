@@ -25,3 +25,10 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+# Resultados
+Demonstração da execução do programa no terminal, pasta de downloads e arquivo de títulos: 
+
+<span>
+    <img src="https://github.com/lucasharzer/Download_Artigos/assets/85804895/4a6d25a0-e921-453b-acac-e095d24d447b">
+</span>
