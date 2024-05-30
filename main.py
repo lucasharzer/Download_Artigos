@@ -15,6 +15,12 @@ class Navigation:
         self.folder = os.path.join(os.getcwd(), os.getenv("FOLDER"))
         self.titles_file = os.getenv("TITLES")
         self.pos_lock = asyncio.Lock()
+        # HTML variables
+        self.a_tag = "a"
+        self.download_class = "download"
+        self.title_class = "title"
+        self.article_class = "obj_galley_link pdf"
+        self.next_class = "next"
 
     def create_folder(self):
         # Create download folder
@@ -45,7 +51,7 @@ class Navigation:
         soup = await self.access_url(url)
         if soup != 0:
             # PDF link
-            download_link = soup.find("a", class_="download")["href"]
+            download_link = soup.find(self.a_tag, class_=self.download_class)["href"]
             if not download_link.startswith("http"):
                 download_link = aiohttp.helpers.urljoin(url, download_link)
 
@@ -67,25 +73,25 @@ class Navigation:
         item = total_items = 0
 
         with open(self.titles_file, "a", encoding="utf-8") as txt_file:
-            volumes = soup.find_all("a", class_="title")
+            volumes = soup.find_all(self.a_tag, class_=self.title_class)
             print(f"Accessing {len(volumes)} volumes, wait some seconds...")
             # Get total items
             for volume in volumes:
                 soup_volumes = await self.access_url(volume["href"])
-                articles = soup_volumes.find_all("a", class_="obj_galley_link pdf")
+                articles = soup_volumes.find_all(self.a_tag, class_=self.article_class)
                 total_items += len(articles)
 
             # Access each volume
             for volume in volumes:
                 soup_volumes = await self.access_url(volume["href"])
-                articles = soup_volumes.find_all("a", class_="obj_galley_link pdf")
+                articles = soup_volumes.find_all(self.a_tag, class_=self.article_class)
 
                 # Access each link
                 tasks = []
                 for article in articles:
                     item += 1
                     title = str(soup_volumes.find(
-                        "a", id=re.search(r"article-\d+", article["id"]).group()
+                        self.a_tag, id=re.search(r"article-\d+", article["id"]).group()
                     ).get_text()).strip().split("\n")[0]
 
                     async with self.pos_lock:
@@ -114,7 +120,7 @@ class Navigation:
                 soup = await self.access_url()
                 pos = await self.access_volumes(soup, pos)
                 # Next page
-                self.link = soup.find("a", class_="next")["href"]
+                self.link = soup.find(self.a_tag, class_=self.next_class)["href"]
             except TypeError:
                 print("End of pages" + " "*35)
                 break
