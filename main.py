@@ -32,7 +32,7 @@ class Navigation:
                     async with session.get(url) as response:
                         response.raise_for_status()
                         # HTML content
-                        soup = BeautifulSoup(await response.text(), 'html.parser')
+                        soup = BeautifulSoup(await response.text(), "html.parser")
                         return soup
             except aiohttp.ClientResponseError as e:
                 return 0
@@ -43,8 +43,8 @@ class Navigation:
         soup = await self.access_url(url)
         if soup != 0:
             # PDF link
-            download_link = soup.find('a', class_='download')['href']
-            if not download_link.startswith('http'):
+            download_link = soup.find("a", class_="download")["href"]
+            if not download_link.startswith("http"):
                 download_link = aiohttp.helpers.urljoin(url, download_link)
 
             # PDF Download
@@ -55,7 +55,7 @@ class Navigation:
 
             # Save PDF
             file_path = os.path.join(self.folder, file_name)
-            with open(file_path, 'wb') as file:
+            with open(file_path, "wb") as file:
                 file.write(pdf_content)
             return True
         else:
@@ -88,11 +88,12 @@ class Navigation:
 
                     async with self.pos_lock:
                         pos += 1
+                        # Normalize file name
                         file_name = f"{pos}-" + re.sub(r'[<>:"/\\|?*]', "", title) + ".pdf"
 
                     print(f"[{item}/{total_items}] - \033[94m{title[:30]+'...'}\033[0m", end="\r")
 
-                    tasks.append((self.download_file(article['href'], file_name), title, pos))
+                    tasks.append((self.download_file(article["href"], file_name), title, pos))
 
                 results = await asyncio.gather(*[task[0] for task in tasks])
                 for result, task in zip(results, tasks):
@@ -117,6 +118,7 @@ class Navigation:
                 break
 
     def list_files(self):
+        # List all files
         files = len(os.listdir(self.folder))
         print(f"\033[92m{files} files downloaded\033[0m")
 
