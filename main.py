@@ -87,7 +87,7 @@ class Navigation:
                 articles = soup_volumes.find_all(self.a_tag, class_=self.article_class)
 
                 # Access each link
-                tasks = []
+                tasks = list()
                 for article in articles:
                     item += 1
                     title = str(soup_volumes.find(
