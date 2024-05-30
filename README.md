@@ -24,3 +24,8 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+# Resultados
+<span>
+    <img src="https://github.com/lucasharzer/Download_Artigos/assets/85804895/1ae439cb-aa62-48bd-b725-25e25145a004">
+</span>
