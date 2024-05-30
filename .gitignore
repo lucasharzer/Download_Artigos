@@ -6,3 +6,6 @@ files
 
 # Text file with titles
 titles.txt
+
+# Enviroment variables folder
+.env

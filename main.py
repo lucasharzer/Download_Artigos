@@ -1,3 +1,4 @@
+from dotenv import load_dotenv, find_dotenv
 from bs4 import BeautifulSoup
 import platform
 import aiohttp
@@ -9,9 +10,10 @@ import os
 class Navigation:
     def __init__(self):
         # Main variables
-        self.link = "https://journal.seriousgamessociety.org/index.php/IJSG/issue/archive"
-        self.folder = os.path.join(os.getcwd(), "files")
-        self.titles_file = "titles.txt"
+        load_dotenv(find_dotenv())
+        self.link = os.getenv("LINK")
+        self.folder = os.path.join(os.getcwd(), os.getenv("FOLDER"))
+        self.titles_file = os.getenv("TITLES")
         self.pos_lock = asyncio.Lock()
 
     def create_folder(self):
