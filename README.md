@@ -10,7 +10,7 @@ Obs: O programa funciona de forma assíncrona para acelerar e agilizar o process
 - `python-dotenv`: Bilioteca do python ler variáveis de ambiente no arquivo `.env`.
 
 # Comandos
-Obs: Execute esses comandos na raiz do projeto.
+Obs: Execute esses comandos na raiz do projeto. Após renomear o arquivo .env.example, pode modificar as variáveis FOLDER e TITLE para o nome que preferirem exceto a variável LINK.
 
 - Renomear o arquivo `.env.example` para `.env` (manualmente ou com o comando)
 ```bash
