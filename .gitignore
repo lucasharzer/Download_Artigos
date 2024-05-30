@@ -1,8 +1,6 @@
 # Virtual enviroments to storage dependencies
 venv
-
 # Files folder
 files
-
 # Text file with titles
 titles.txt

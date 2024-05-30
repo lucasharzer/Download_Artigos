@@ -1,3 +1,4 @@
+from dotenv import load_dotenv, find_dotenv
 from bs4 import BeautifulSoup
 import requests
 import platform
@@ -9,11 +10,19 @@ import os
 
 class Navigation:
     def __init__(self):
+        load_dotenv(find_dotenv())
         # Main variables
-        self.link = "https://www.hindawi.com/journals/ijcgt/contents"
-        self.folder = os.path.join(os.getcwd(), "files")
-        self.titles_file = "titles.txt"
+        self.link = os.getenv("LINK")
+        self.folder = os.path.join(os.getcwd(), os.getenv("FOLDER"))
+        self.titles_file = os.getenv("TITLES")
         self.pos_lock = asyncio.Lock()
+        # HTML variables
+        self.a_tag = "a"
+        self.div_tag = "div"
+        self.h2_tag = "h2"
+        self.contents_class = "sc-dxZgTM iYdecD toc_article"
+        self.download_attr = "Download PDF"
+        self.next_attr = "Next"
 
     def create_folder(self):
         # Create download folder
@@ -34,7 +43,7 @@ class Navigation:
                 }
                 response = requests.get(url, headers=headers)
                 # # HTML content
-                soup = BeautifulSoup(response.text, 'html.parser')
+                soup = BeautifulSoup(response.text, "html.parser")
                 return soup 
             except requests.exceptions.RequestException as e:
                 return 0             
@@ -52,20 +61,20 @@ class Navigation:
 
         # Save PDF
         file_path = os.path.join(self.folder, file_name)
-        with open(file_path, 'wb') as file:
+        with open(file_path, "wb") as file:
             file.write(pdf_content)
         
     async def access_articles(self, soup, pos):
         item = total_items = 0
         
         with open(self.titles_file, "a", encoding="utf-8") as txt_file:
-            contents = soup.find_all("div", class_="sc-dxZgTM iYdecD toc_article")
+            contents = soup.find_all(self.div_tag, class_=self.contents_class)
             total_items = len(contents)
             tasks = []
             for content in contents:
-                title = content.find("h2").get_text().split("\n")[0]
+                title = content.find(self.h2_tag).get_text().split("\n")[0]
                 # PDF link
-                download_url = content.find("a", attrs={"aria-label": "Download PDF"})["href"]
+                download_url = content.find(self.a_tag, attrs={"aria-label": self.download_attr})["href"]
                 async with self.pos_lock:
                     pos += 1
                     file_name = f"{pos}-" + re.sub(r'[<>:"/\\|?*]', "", title) + ".pdf"
@@ -78,6 +87,7 @@ class Navigation:
             results = await asyncio.gather(*[task[0] for task in tasks])
             for result, task in zip(results, tasks):
                 _, title, current_pos = task
+                # Save PDF in text file
                 txt_file.write(f"{current_pos}.{title}\n")
                 txt_file.flush()
 
@@ -91,7 +101,7 @@ class Navigation:
                 soup = await self.access_url()
                 pos = await self.access_articles(soup, pos)
                 # Next page
-                self.link = str(soup.find("a", attrs={"aria-label": "Next"})["href"])
+                self.link = str(soup.find(self.a_tag, attrs={"aria-label": self.next_attr})["href"])
                 # Wait 3 seconds to avoid "Too Many Requests" error
                 await asyncio.sleep(3)
                 if self.link == "#/":
